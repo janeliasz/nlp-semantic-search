@@ -19,3 +19,15 @@ def calc_recall(y_true: List[int], y_pred: List[List[int]], num_classes: int) ->
     y_pred = multi_hot_encode(y_pred, num_classes).tolist()
 
     return recall_score(y_true, y_pred, average="macro").item()
+
+
+def calc_mrr(y_true: List[int], y_pred: List[List[int]]) -> float:
+    mrr = 0.0
+
+    for i, (true, pred) in enumerate(zip(y_true, y_pred)):
+        if true in pred:
+            mrr += 1.0 / (pred.index(true) + 1)
+
+    mrr /= len(y_true)
+
+    return mrr
